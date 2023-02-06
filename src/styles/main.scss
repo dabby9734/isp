@@ -1,0 +1,205 @@
+// MEDIA QUERY MANAGER
+/*
+0 - 600px:          Phone
+600px - 900px       Table Portrait
+900px - 1200px      Table Landscape
+[1200px - 1800px]   Desktop Normal Styles
+1800px +            Big Desktop
+1em = 16px
+ORDER: Base + Typography > Generar Layout + Grid > Page Layout > Components
+*/
+@mixin respond($breakpoint) {
+  // Phone-xs
+  @if $breakpoint == phone-xs {
+    @media (max-width: 20em) {
+      @content;
+    } //0 - 320px
+  }
+  // Phone
+  @if $breakpoint == phone {
+    @media (max-width: 37.5em) {
+      @content;
+    } //0 - 600px
+  }
+  // Table Portrait
+  @if $breakpoint == tab-port {
+    @media (max-width: 56.25em) {
+      @content;
+    } //900px
+  }
+  // Table Landscape
+  @if $breakpoint == tab-land {
+    @media (max-width: 75em) {
+      @content;
+    } //1200px
+  }
+  // Big Desktop
+  @if $breakpoint == big-desktop {
+    @media (min-width: 112.5em) {
+      @content;
+    } //1800px +
+  }
+}
+
+// Border White Mixin
+@mixin section-borders {
+  border: 1.5rem solid #fff;
+  border-top: 0;
+  border-bottom: 0;
+}
+
+@mixin stroke-width($property) {
+  -webkit-text-stroke-width: $property;
+  -moz-text-stroke-width: $property;
+}
+
+@mixin stroke-color($property) {
+  -webkit-text-stroke-color: $property;
+  -moz-text-stroke-color: $property;
+}
+
+// OTHER STUFFS
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+// LOGIN
+
+.login {
+  &-bg {
+    background: url("../public/hci_bg.webp") no-repeat;
+    background-size: cover;
+  }
+
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: right;
+  align-items: center;
+  @include respond(tab-port) {
+    justify-content: center;
+  }
+
+  background-color: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(5px);
+
+  &__hero {
+    @include respond(tab-port) {
+      display: none;
+    }
+
+    width: 100%;
+    height: 100%;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    &__main-text {
+      font-size: 5rem;
+      font-weight: bold;
+      letter-spacing: 5px;
+      margin: 0;
+      @include stroke-width(2px);
+      @include stroke-color(#111827);
+      color: transparent;
+
+      text-shadow: 6px 6px red;
+    }
+
+    &__description {
+      color: #111827;
+      font-family: "Assistant", sans-serif;
+      font-weight: 600;
+      font-style: normal;
+      line-height: initial;
+      text-align: center;
+    }
+  }
+  &__content {
+    width: 80%;
+
+    font-family: "Assistant", sans-serif;
+    font-weight: 600;
+    font-style: normal;
+    line-height: initial;
+
+    h1 {
+      color: white;
+      text-align: left;
+      opacity: 0.8;
+      margin-top: none;
+    }
+
+    .login-button-right-align {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+
+    &-links {
+      color: white;
+      opacity: 0.8;
+      padding-top: 5rem;
+
+      p {
+        text-align: center;
+        margin: 0.3rem;
+      }
+      a {
+        text-decoration: none;
+        color: #90caf9;
+      }
+
+      .underline {
+        position: relative;
+
+        &::before {
+          content: "";
+          position: absolute;
+          bottom: 0;
+          right: 0;
+          width: 0;
+          height: 2px;
+          background-color: #90caf9;
+          transition: width 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+      }
+
+      @media (hover: hover) and (pointer: fine) {
+        .underline:hover::before {
+          left: 0;
+          right: auto;
+          width: 100%;
+        }
+      }
+    }
+  }
+  &__content-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+  }
+  &__content-bg {
+    box-shadow: -5px 0 10px rgba(0, 0, 0, 0.6);
+    border-radius: 5px 0 0 5px;
+    background-color: rgba(0, 0, 0, 0.6);
+
+    width: 80%;
+    height: 100%;
+
+    @include respond(tab-port) {
+      width: 100%;
+      box-shadow: none;
+      border-radius: 0;
+    }
+  }
+}
