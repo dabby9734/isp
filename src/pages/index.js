@@ -40,6 +40,7 @@ export default function LoginPage() {
     if (resp.ok) {
       const data = await resp.json();
       sessionStorage.setItem("session", data.session);
+      sessionStorage.setItem("suffix", data.suffix);
       router.push("/checkattd");
     } else {
       setInfo("Incorrect username or password.");
