@@ -50,7 +50,7 @@ export default function LoginPage() {
   return (
     <div>
       <Head>
-        <title>iEMB :: Login</title>
+        <title>Attendance Checker :: Login</title>
         <meta name="description" content="i-EMB, reimagined." />
         <link rel="icon" href="/favicon.ico" />
       </Head>
