@@ -2,7 +2,7 @@ import * as React from "react";
 import Head from "next/head";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { DataGrid } from "@mui/x-data-grid";
-import { Alert, TextField, Snackbar, Stack, Button } from "@mui/material";
+import { Alert, Button, TextField, Snackbar, Stack } from "@mui/material";
 import moment from "moment";
 import { useRouter } from "next/router";
 import { Box } from "@mui/system";
@@ -53,6 +53,9 @@ export default function Home() {
       field: "pretty_date",
       headerName: "Date",
       flex: 1,
+      sortComparator: (v1, v2) => {
+        return moment(v1).diff(moment(v2));
+      },
     },
     {
       field: "status",
@@ -109,13 +112,15 @@ export default function Home() {
             <Button variant="contained" onClick={checkAttd}>
               Check Attendance
             </Button>
-            <Box sx={{ height: 400, width: "100%" }}>
+            <Box sx={{ width: "100%" }}>
               <DataGrid
                 getRowId={(row) => row.date}
                 rows={attendance}
                 columns={columns}
-                pageSize={20}
+                pageSize={10}
                 rowsPerPageOptions={[5]}
+                disableSelectionOnClick
+                autoHeight
               />
             </Box>
           </Stack>
