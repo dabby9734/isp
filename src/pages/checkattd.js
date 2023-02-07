@@ -16,12 +16,13 @@ export default function Home() {
   const [attendance, setAttendance] = React.useState([]);
   const router = useRouter();
   async function checkAttd() {
+    let suffix = sessionStorage.getItem("suffix");
     let session = sessionStorage.getItem("session");
-    if (!session) {
+    if (!suffix || !session) {
       router.push("/");
     }
     let resp = await fetch(
-      `https://isp-cf-workers.dabby.workers.dev/attendance?session=${session}&start=${startDate.format(
+      `https://isp-cf-workers.dabby.workers.dev/attendance?session=${session}&sess_suffix=${suffix}&start=${startDate.format(
         "YYYY-MM-DD"
       )}&end=${endDate.format("YYYY-MM-DD")}&rankby=date&status=1,5,15,10,14`
     ).catch((e) => {
