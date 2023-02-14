@@ -94,6 +94,7 @@ export default function Home() {
           <Stack spacing={3}>
             <DatePicker
               label="Start Date"
+              inputFormat="DD/MM/yyyy"
               value={startDate}
               onChange={(newValue) => {
                 setStartDate(newValue);
@@ -102,9 +103,9 @@ export default function Home() {
             />
             <DatePicker
               label="End Date"
+              inputFormat="DD/MM/yyyy"
               value={endDate}
               onChange={(newValue) => {
-                console.log(newValue);
                 setEndDate(newValue);
               }}
               renderInput={(params) => <TextField {...params} />}
