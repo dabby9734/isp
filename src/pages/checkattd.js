@@ -24,7 +24,7 @@ export default function Home() {
     let resp = await fetch(
       `https://isp-cf-workers.dabby.workers.dev/attendance?session=${session}&sess_suffix=${suffix}&start=${startDate.format(
         "YYYY-MM-DD"
-      )}&end=${endDate.format("YYYY-MM-DD")}&rankby=date&status=1,5,15,10,14`
+      )}&end=${endDate.format("YYYY-MM-DD")}&rankby=date&status=1,5,15,10,14,7`
     ).catch((e) => {
       setInfo("Error fetching attendance data.");
     });
