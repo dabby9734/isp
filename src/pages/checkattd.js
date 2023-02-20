@@ -15,10 +15,29 @@ export default function Home() {
   const [info, setInfo] = React.useState("");
   const [attendance, setAttendance] = React.useState([]);
   const router = useRouter();
+  React.useEffect(() => {
+    let suffix = sessionStorage.getItem("suffix");
+    let session = sessionStorage.getItem("session");
+    if (!suffix || !session) {
+      setInfo("Session expired. Please login again.");
+      router.push("/");
+    }
+    fetch(
+      `https://isp-cf-workers.dabby.workers.dev/authcheck?session=${session}&sess_suffix=${suffix}`
+    ).then((resp) => {
+      if (resp.status !== 200) {
+        setInfo("Session expired. Please login again.");
+        sessionStorage.clear();
+        router.push("/");
+      }
+    });
+  }, []);
+
   async function checkAttd() {
     let suffix = sessionStorage.getItem("suffix");
     let session = sessionStorage.getItem("session");
     if (!suffix || !session) {
+      sessionStorage.clear();
       router.push("/");
     }
     let resp = await fetch(
@@ -32,7 +51,7 @@ export default function Home() {
     switch (resp.status) {
       case 401:
         setInfo("Session expired. Please login again.");
-        localStorage.removeItem("session");
+        sessionStorage.clear();
         router.push("/");
         return;
       case 400:
