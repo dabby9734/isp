@@ -43,7 +43,16 @@ export default function Home() {
     let resp = await fetch(
       `https://isp-cf-workers.dabby.workers.dev/attendance?session=${session}&sess_suffix=${suffix}&start=${startDate.format(
         "YYYY-MM-DD"
-      )}&end=${endDate.format("YYYY-MM-DD")}&rankby=date&status=1,5,15,10,14,7`
+      )}&end=${endDate.format(
+        "YYYY-MM-DD"
+      )}&rankby=date&status=1,4,5,15,10,14,7`
+      // 1 - Present
+      // 4 - Absent
+      // 5 - Absent (With Excuse)
+      // 7 - MC
+      // 10 - Exempted
+      // 14 - PW Preparation
+      // 15 - Absent (Parents Letter)
     ).catch((e) => {
       setInfo("Error fetching attendance data.");
     });
