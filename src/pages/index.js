@@ -95,33 +95,22 @@ export default function LoginPage() {
                       type="password"
                       autoComplete="current-password"
                     />
-                    <div className="login-button-right-align">
-                      <FormGroup>
-                        <FormControlLabel
-                          disabled
-                          control={<Checkbox />}
-                          label="Remember Me"
-                          sx={{
-                            color: "text.secondary",
-                            paddingLeft: "1rem",
-                          }}
-                          onChange={(e) => {
-                            setRem(e.target.checked);
-                          }}
-                        />
-                      </FormGroup>
-                      <LoadingButton
-                        variant="contained"
-                        type="submit"
-                        onClick={loginUser}
-                        endIcon={<LoginIcon />}
-                        loading={loading}
-                        loadingPosition="end"
-                        sx={{ maxWidth: "8rem", textTransform: "none" }}
-                      >
-                        Login
-                      </LoadingButton>
-                    </div>
+                    <LoadingButton
+                      variant="contained"
+                      type="submit"
+                      onClick={loginUser}
+                      endIcon={<LoginIcon />}
+                      loading={loading}
+                      loadingPosition="end"
+                      sx={{
+                        minHeight: "2.5rem",
+                        maxWidth: "6rem",
+                        textTransform: "none",
+                        alignSelf: "flex-end",
+                      }}
+                    >
+                      Login
+                    </LoadingButton>
                   </Stack>
                 </ThemeProvider>
 
