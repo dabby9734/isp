@@ -51,7 +51,7 @@ export default function CheckExam() {
     let resp = await fetch(
       `http://isp-cf-workers.dabby.workers.dev/examcheck?session=${session}&sess_suffix=${suffix}&id=${id}`
     ).catch((e) => {
-      setInfo("Error fetching attendance data.");
+      setInfo("Error fetching exam data.");
     });
 
     switch (resp.status) {
