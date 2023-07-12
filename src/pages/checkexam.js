@@ -131,7 +131,9 @@ export default function CheckExam() {
                 }}
               >
                 {exams.map((exam) => (
-                  <MenuItem value={exam.exam_id}>{exam.exam_name}</MenuItem>
+                  <MenuItem key={exam.exam_id} value={exam.exam_id}>
+                    {exam.exam_name}
+                  </MenuItem>
                 ))}
               </Select>
             </FormControl>
