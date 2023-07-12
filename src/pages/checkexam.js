@@ -1,19 +1,25 @@
 import * as React from "react";
 import Head from "next/head";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { DataGrid } from "@mui/x-data-grid";
-import { Alert, Button, TextField, Snackbar, Stack } from "@mui/material";
-import moment from "moment";
+import {
+  Alert,
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Snackbar,
+  Stack,
+} from "@mui/material";
 import { useRouter } from "next/router";
 import { Box } from "@mui/system";
 
-export default function Home() {
-  const [startDate, setStartDate] = React.useState(
-    moment().subtract(7, "days")
-  );
-  const [endDate, setEndDate] = React.useState(moment());
+export default function CheckExam() {
+  const [id, setId] = React.useState("0");
+  const [exams, setExams] = React.useState([]);
+  const [results, setResults] = React.useState([]);
   const [info, setInfo] = React.useState("");
-  const [attendance, setAttendance] = React.useState([]);
+  const [optsLoading, setOptsLoading] = React.useState(true);
   const router = useRouter();
   React.useEffect(() => {
     let suffix = sessionStorage.getItem("suffix");
@@ -31,9 +37,11 @@ export default function Home() {
         router.push("/");
       }
     });
+    checkExam();
+    setOptsLoading(false);
   }, []);
 
-  async function checkAttd() {
+  async function checkExam() {
     let suffix = sessionStorage.getItem("suffix");
     let session = sessionStorage.getItem("session");
     if (!suffix || !session) {
@@ -41,18 +49,7 @@ export default function Home() {
       router.push("/");
     }
     let resp = await fetch(
-      `https://isp-cf-workers.dabby.workers.dev/attendance?session=${session}&sess_suffix=${suffix}&start=${startDate.format(
-        "YYYY-MM-DD"
-      )}&end=${endDate.format(
-        "YYYY-MM-DD"
-      )}&rankby=date&status=1,4,5,15,10,14,7`
-      // 1 - Present
-      // 4 - Absent
-      // 5 - Absent (With Excuse)
-      // 7 - MC
-      // 10 - Exempted
-      // 14 - PW Preparation
-      // 15 - Absent (Parents Letter)
+      `http://isp-cf-workers.dabby.workers.dev/examcheck?session=${session}&sess_suffix=${suffix}&id=${id}`
     ).catch((e) => {
       setInfo("Error fetching attendance data.");
     });
@@ -74,32 +71,30 @@ export default function Home() {
     }
 
     let data = await resp.json();
-    setAttendance(data);
+    setExams(data.exams);
+    setResults(data.exam_results);
   }
   const columns = [
     {
-      field: "pretty_date",
-      headerName: "Date",
-      flex: 1,
-      sortComparator: (v1, v2) => {
-        return moment(v1).diff(moment(v2));
-      },
-    },
-    {
-      field: "status",
-      headerName: "Status",
+      field: "subject",
+      headerName: "Subject",
       flex: 1,
     },
     {
-      field: "updated_by",
-      headerName: "Updated By",
+      field: "mark",
+      headerName: "Mark",
+      flex: 1,
+    },
+    {
+      field: "grade",
+      headerName: "Grade",
       flex: 1,
     },
   ];
   return (
     <>
       <Head>
-        <title>Check Attendance</title>
+        <title>Check Exam Results</title>
         <meta name="description" content="Check your attendance here" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
@@ -122,33 +117,31 @@ export default function Home() {
             <Button href="/checkattd">Attendance</Button>
             <Button href="/checkexam">Exam Results</Button>
           </Stack>
-          <h1>Check Attendance</h1>
+          <h1>Check Exam Results</h1>
           <Stack spacing={3}>
-            <DatePicker
-              label="Start Date"
-              inputFormat="DD/MM/yyyy"
-              value={startDate}
-              onChange={(newValue) => {
-                setStartDate(newValue);
-              }}
-              renderInput={(params) => <TextField {...params} />}
-            />
-            <DatePicker
-              label="End Date"
-              inputFormat="DD/MM/yyyy"
-              value={endDate}
-              onChange={(newValue) => {
-                setEndDate(newValue);
-              }}
-              renderInput={(params) => <TextField {...params} />}
-            />
-            <Button variant="contained" onClick={checkAttd}>
-              Check Attendance
+            <FormControl fullWidth>
+              <InputLabel id="exam-selector-label">Select Exam</InputLabel>
+              <Select
+                labelId="exam-selector-label"
+                id="exam-selector"
+                value={id}
+                label="Select Exam"
+                onChange={(e) => {
+                  setId(e.target.value);
+                }}
+              >
+                {exams.map((exam) => (
+                  <MenuItem value={exam.exam_id}>{exam.exam_name}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <Button variant="contained" onClick={checkExam}>
+              Check Exam Results
             </Button>
             <Box sx={{ width: "100%" }}>
               <DataGrid
-                getRowId={(row) => row.date}
-                rows={attendance}
+                getRowId={(row) => row.subject}
+                rows={results}
                 columns={columns}
                 pageSize={10}
                 rowsPerPageOptions={[5]}
