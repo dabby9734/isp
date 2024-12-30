@@ -13,3 +13,7 @@ The backend is implemented using Cloudflare Workers. The source code is made ava
 ## Contributing
 
 Please feel free to open new issues and contribute through new pull requests.
+
+## Caveats
+
+This doesn't work with the Hwa Chong High School Section ISP (https://isphs.hci.edu.sg).
